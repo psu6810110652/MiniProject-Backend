@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: domport_db
+      POSTGRES_DB: fandomship_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

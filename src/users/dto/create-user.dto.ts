@@ -8,8 +8,10 @@ export class CreateUserDto {
   phone: string;
 
   @IsEmail()
-  @IsOptional()
-  email?: string;
+  email: string;
+
+  @IsString()
+  password: string;
 
   @IsString()
   address: string;
@@ -17,4 +19,8 @@ export class CreateUserDto {
   @IsInt()
   @IsOptional()
   points?: number;
+
+  @IsString()
+  @IsOptional()
+  role?: string; // Defualt to 'user' in service if not provided
 }
