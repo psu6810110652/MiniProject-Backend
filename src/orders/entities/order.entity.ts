@@ -1,27 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-
-@Entity('order_items')
-export class OrderItem {
-    @PrimaryGeneratedColumn('uuid')
-    item_id: string;
-
-    @Column()
-    product_id: string;
-
-    @Column('int')
-    quantity: number;
-
-    @Column('decimal')
-    unit_price: number;
-
-    @ManyToOne(() => Order, (order) => order.items)
-    @JoinColumn({ name: 'order_id' })
-    order: Order;
-
-    @Column()
-    order_id: string;
-}
+import { OrderItem } from './order-item.entity';
 
 @Entity('orders')
 export class Order {

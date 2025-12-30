@@ -12,8 +12,8 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async validateUser(email: string, pass: string): Promise<any> {
-        const user = await this.usersService.findByEmail(email);
+    async validateUser(identifier: string, pass: string): Promise<any> {
+        const user = await this.usersService.findByUsernameOrEmail(identifier);
         if (user && (await bcrypt.compare(pass, user.password))) {
             const { password, ...result } = user;
             return result;
@@ -36,6 +36,7 @@ export class AuthService {
     }
 
     async register(createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
+        const newUser = await this.usersService.create(createUserDto);
+        return this.login(newUser);
     }
 }

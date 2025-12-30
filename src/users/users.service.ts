@@ -47,6 +47,15 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { email } });
   }
 
+  async findByUsernameOrEmail(identifier: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: [
+        { email: identifier },
+        { name: identifier }
+      ]
+    });
+  }
+
   // ตัวอย่างฟังก์ชันสำหรับเชื่อมกับ Campaign
   async findUserWithCampaign(id: string) {
     const user = await this.findOne(id);

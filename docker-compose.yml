@@ -1,5 +1,23 @@
 version: '3.8'
 services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: domport_db
+      JWT_SECRET: superSecretKey123
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+
   db:
     image: postgres:14
     ports:
@@ -7,7 +25,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: fandomship_db
+      POSTGRES_DB: domport_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
