@@ -1,42 +1,36 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Order } from './order.entity';
-import { Campaign } from '../campaigns/campaign.entity';
-import { User } from '../users/user.entity';
+import { Injectable } from '@nestjs/common';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { Order } from './entities/order.entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class OrdersService {
-  constructor(
-    @InjectRepository(Order) private orderRepo: Repository<Order>,
-    @InjectRepository(Campaign) private campaignRepo: Repository<Campaign>,
-  ) {}
+  private orders: Order[] = [];
 
-  async createOrder(user: User, campaignId: number, quantity: number) {
-    // 1. ดึงข้อมูลแคมเปญ
-    const campaign = await this.campaignRepo.findOne({ where: { id: campaignId } });
-    if (!campaign) throw new BadRequestException('Campaign not found');
+  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    // 1. คำนวณยอดรวม (Total Amount)
+    const totalAmount = createOrderDto.items.reduce(
+      (sum, item) => sum + (item.unit_price * item.quantity),
+      0
+    ) + createOrderDto.shipping_fee;
 
-    // 2. Logic: เช็คว่าหมดเวลาหรือยัง?
-    if (new Date() > new Date(campaign.endDate)) {
-      throw new BadRequestException('Campaign has ended');
-    }
+    // 2. สร้าง Order Object
+    const newOrder: Order = {
+      order_id: uuid(),
+      order_date: new Date(),
+      total_amount: totalAmount,
+      shipping_fee: createOrderDto.shipping_fee,
+      payment_status: 'PENDING',
+      user_id: createOrderDto.user_id,
+      items: createOrderDto.items.map(item => ({ ...item })),
+    };
 
-    // 3. สร้าง Order
-    const order = this.orderRepo.create({
-      user,
-      campaign,
-      quantity,
-      totalPrice: campaign.price * quantity,
-    });
-    
-    // 4. บันทึก Order
-    await this.orderRepo.save(order);
+    this.orders.push(newOrder);
+    return newOrder;
+  }
 
-    // 5. Complex Logic: อัปเดตยอด Current ใน Campaign ทันที (Atomic Update จำลอง)
-    campaign.current += quantity;
-    await this.campaignRepo.save(campaign);
-
-    return order;
+  findAll(): Order[] {
+    // เรียงลำดับจากวันที่ล่าสุด
+    return [...this.orders].sort((a, b) => b.order_date.getTime() - a.order_date.getTime());
   }
 }

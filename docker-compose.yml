@@ -3,11 +3,11 @@ services:
   db:
     image: postgres:14
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: fandomship_db
+      POSTGRES_DB: domport_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
