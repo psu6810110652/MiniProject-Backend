@@ -76,6 +76,7 @@ export class UsersService {
     return this.usersRepository.findOne({
       where: [
         { email: identifier },
+        { username: identifier },
         { name: identifier }
       ]
     });
