@@ -21,7 +21,31 @@ export class User {
     email: string;
 
     @Column({ nullable: true })
-    address: string;
+    address: string; // Keep specifically for full string if needed, or legacy
+
+    @Column({ nullable: true })
+    house_number: string;
+
+    @Column({ nullable: true })
+    sub_district: string;
+
+    @Column({ nullable: true })
+    district: string;
+
+    @Column({ nullable: true })
+    province: string;
+
+    @Column({ nullable: true })
+    postal_code: string;
+
+    @Column({ nullable: true })
+    facebook: string;
+
+    @Column({ nullable: true })
+    twitter: string;
+
+    @Column({ nullable: true })
+    line: string;
 
     @Column({ default: 0 })
     points: number;

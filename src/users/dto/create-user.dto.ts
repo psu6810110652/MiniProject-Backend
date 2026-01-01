@@ -18,6 +18,40 @@ export class CreateUserDto {
   @IsOptional()
   address?: string;
 
+  @IsString()
+  @IsOptional()
+  house_number?: string;
+
+  @IsString()
+  @IsOptional()
+  sub_district?: string;
+
+  @IsString()
+  @IsOptional()
+  district?: string;
+
+  @IsString()
+  @IsOptional()
+  province?: string;
+
+  @IsString()
+  @IsOptional()
+  postal_code?: string;
+
+  @IsString()
+  @IsOptional()
+  facebook?: string;
+
+  @IsString()
+  @IsOptional()
+  twitter?: string;
+
+  @IsString()
+  @IsOptional()
+  line?: string;
+
+
+
   @IsInt()
   @IsOptional()
   points?: number;

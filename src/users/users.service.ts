@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
 
 @Injectable()
@@ -29,6 +30,17 @@ export class UsersService {
     });
 
     return this.usersRepository.save(newUser);
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOne(id);
+    // Explicitly cast or handle the DTO to avoid type mismatch with Enum
+    const updatedUser = this.usersRepository.merge(user, updateUserDto as any);
+    return this.usersRepository.save(updatedUser);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.delete(id);
   }
 
   async findAll(): Promise<User[]> {

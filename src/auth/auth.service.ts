@@ -31,6 +31,13 @@ export class AuthService {
                 email: user.email,
                 role: user.role,
                 points: user.points,
+                phone: user.phone,
+                address: user.address,
+                house_number: user.house_number,
+                sub_district: user.sub_district,
+                district: user.district,
+                province: user.province,
+                postal_code: user.postal_code,
             }
         };
     }
