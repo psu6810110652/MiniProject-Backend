@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
+import { encrypt, decrypt } from '../common/utils/encryption';
 
 @Injectable()
 export class UsersService {
@@ -19,12 +20,12 @@ export class UsersService {
       throw new ConflictException('Email already exists');
     }
 
-    const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    // const salt = await bcrypt.genSalt();
+    // const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
     const newUser = this.usersRepository.create({
       ...createUserDto,
-      password: hashedPassword,
+      password: encrypt(createUserDto.password), // Encrypt
       points: createUserDto.points || 0,
       role: (createUserDto.role as UserRole) || UserRole.USER,
     });
@@ -34,6 +35,12 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
+
+    // Encrypt password if updated
+    if (updateUserDto.password) {
+      updateUserDto.password = encrypt(updateUserDto.password);
+    }
+
     // Explicitly cast or handle the DTO to avoid type mismatch with Enum
     const updatedUser = this.usersRepository.merge(user, updateUserDto as any);
     return this.usersRepository.save(updatedUser);
@@ -44,7 +51,12 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    const users = await this.usersRepository.find();
+    // Decrypt passwords for Admin/API view
+    return users.map(user => {
+      if (user.password) user.password = decrypt(user.password);
+      return user;
+    });
   }
 
   async findOne(id: string): Promise<User> {
@@ -52,6 +64,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+    if (user.password) user.password = decrypt(user.password);
     return user;
   }
 
