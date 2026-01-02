@@ -50,6 +50,15 @@ export class User {
     @Column({ nullable: true })
     line: string;
 
+    @Column({ nullable: true })
+    facebookName: string;
+
+    @Column({ nullable: true })
+    twitterName: string;
+
+    @Column({ nullable: true })
+    lineName: string;
+
     @Column({ default: 0 })
     points: number;
 

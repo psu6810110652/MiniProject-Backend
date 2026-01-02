@@ -50,6 +50,12 @@ export class AuthService {
                 district: user.district,
                 province: user.province,
                 postal_code: user.postal_code,
+                facebook: user.facebook,
+                twitter: user.twitter,
+                line: user.line,
+                facebookName: user.facebookName,
+                twitterName: user.twitterName,
+                lineName: user.lineName,
             }
         };
     }

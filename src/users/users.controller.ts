@@ -34,6 +34,7 @@ export class UsersController {
   }
 
   // Admin or User
+  // Admin or User
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.USER)
   @Patch(':id')
