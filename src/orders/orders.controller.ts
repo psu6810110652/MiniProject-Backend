@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -14,5 +14,10 @@ export class OrdersController {
   @Get()
   findAll() {
     return this.ordersService.findAll();
+  }
+
+  @Post(':orderId/shipping-label')
+  createShippingLabel(@Param('orderId') orderId: string) {
+    return this.ordersService.create_shipping_label(orderId);
   }
 }

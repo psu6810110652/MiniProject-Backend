@@ -19,6 +19,9 @@ export class Order {
     @Column()
     payment_status: string;
 
+    @Column({ default: false })
+    stock_deducted: boolean;
+
     @ManyToOne(() => User, (user) => user.orders, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user: User;
