@@ -39,6 +39,7 @@ export class UsersController {
   @Roles(UserRole.ADMIN, UserRole.USER)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(`Updating User ${id}:`, updateUserDto); // DEBUG LINK
     return this.usersService.update(id, updateUserDto);
   }
 
