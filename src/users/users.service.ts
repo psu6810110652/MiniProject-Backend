@@ -47,7 +47,11 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+    await this.usersRepository.softDelete(id);
+  }
+
+  async restore(id: string): Promise<void> {
+    await this.usersRepository.restore(id);
   }
 
   async findAll(): Promise<User[]> {
@@ -78,7 +82,8 @@ export class UsersService {
         { email: identifier },
         { username: identifier },
         { name: identifier }
-      ]
+      ],
+      withDeleted: true,
     });
   }
 

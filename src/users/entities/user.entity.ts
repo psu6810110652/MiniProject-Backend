@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { Order } from '../../orders/entities/order.entity';
 
 export enum UserRole {
@@ -59,6 +59,9 @@ export class User {
     @Column({ nullable: true })
     lineName: string;
 
+    @Column({ default: false })
+    isBlacklisted: boolean;
+
     @Column({ default: 0 })
     points: number;
 
@@ -80,4 +83,7 @@ export class User {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deletedAt: Date;
 }

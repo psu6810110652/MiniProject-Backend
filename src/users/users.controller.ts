@@ -48,4 +48,11 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.USER)
+  @Patch(':id/restore')
+  restore(@Param('id') id: string) {
+    return this.usersService.restore(id);
+  }
 }
