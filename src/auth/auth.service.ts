@@ -26,13 +26,7 @@ export class AuthService {
         }
 
         if (isValid && user) {
-            if (user.isBlacklisted) {
-                // Return user even if blacklisted so we can block them in controller/frontend 
-                // OR duplicate the specific "Unauthorized" check here.
-                // However, based on Login.tsx logic, the frontend expects to receive the user object 
-                // with `isBlacklisted: true` so it can show the special modal.
-                // So we MUST return the user here.
-            }
+            // Note: We return the user even if blacklisted so the controller/frontend can handle the specific blacklist response logic.
             const { password, ...result } = user;
             return result;
         }
