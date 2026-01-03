@@ -1,17 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
+import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
+import { FandomsModule } from './fandoms/fandoms.module';
 
 @Module({
   imports: [
@@ -31,7 +30,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
       inject: [ConfigService],
     }),
     AuthModule,
-    UsersModule, SuppliersModule, CategoriesModule, ProductsModule, OrdersModule, CampaignsModule],
+    UsersModule, SuppliersModule, CategoriesModule, ProductsModule, OrdersModule, CampaignsModule, FandomsModule],
   controllers: [AppController],
   providers: [AppService],
 })
