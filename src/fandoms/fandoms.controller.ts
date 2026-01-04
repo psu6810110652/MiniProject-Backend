@@ -12,14 +12,14 @@ import {
 } from '@nestjs/common';
 import { FandomsService } from './fandoms.service';
 import { CreateFandomDto, UpdateFandomDto } from './dto/create-fandom.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('fandoms')
 export class FandomsController {
-  constructor(private readonly fandomsService: FandomsService) {}
+  constructor(private readonly fandomsService: FandomsService) { }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   create(@Body() createFandomDto: CreateFandomDto, @Request() req) {
     return this.fandomsService.create(createFandomDto, req.user.id);
   }
@@ -50,13 +50,13 @@ export class FandomsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id: string, @Body() updateFandomDto: UpdateFandomDto) {
     return this.fandomsService.update(id, updateFandomDto);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string) {
     return this.fandomsService.remove(id);
   }

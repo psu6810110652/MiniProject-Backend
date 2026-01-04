@@ -30,8 +30,8 @@ export class Fandom {
   @Column({ type: 'enum', enum: ['anime', 'movie', 'game', 'book', 'comic', 'other'], default: 'other' })
   category: string;
 
-  @Column({ nullable: true })
-  tags: string; // JSON string of tags array
+  @Column({ type: 'text', nullable: true })
+  tags: string | null; // JSON string of tags array
 
   @ManyToOne(() => User)
   creator: User;

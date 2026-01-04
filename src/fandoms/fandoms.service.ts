@@ -9,13 +9,14 @@ export class FandomsService {
   constructor(
     @InjectRepository(Fandom)
     private fandomsRepository: Repository<Fandom>,
-  ) {}
+  ) { }
 
   async create(createFandomDto: CreateFandomDto, creatorId: string): Promise<Fandom> {
+    const { tags, ...fandomData } = createFandomDto;
     const fandom = this.fandomsRepository.create({
-      ...createFandomDto,
+      ...fandomData,
       creator_id: creatorId,
-      tags: createFandomDto.tags ? JSON.stringify(createFandomDto.tags) : null,
+      tags: tags ? JSON.stringify(tags) : undefined,
     });
     return this.fandomsRepository.save(fandom);
   }
@@ -52,7 +53,7 @@ export class FandomsService {
 
   async update(id: string, updateFandomDto: UpdateFandomDto): Promise<Fandom> {
     const fandom = await this.findOne(id);
-    
+
     const updateData = {
       ...updateFandomDto,
       tags: updateFandomDto.tags ? JSON.stringify(updateFandomDto.tags) : fandom.tags,
