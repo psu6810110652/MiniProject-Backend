@@ -41,23 +41,7 @@ export class User {
     @Column({ nullable: true })
     postal_code: string;
 
-    @Column({ nullable: true })
-    facebook: string;
 
-    @Column({ nullable: true })
-    twitter: string;
-
-    @Column({ nullable: true })
-    line: string;
-
-    @Column({ nullable: true })
-    facebookName: string;
-
-    @Column({ nullable: true })
-    twitterName: string;
-
-    @Column({ nullable: true })
-    lineName: string;
 
     @Column({ default: false })
     isBlacklisted: boolean;

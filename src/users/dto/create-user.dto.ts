@@ -46,29 +46,7 @@ export class CreateUserDto {
   @IsOptional()
   postal_code?: string;
 
-  @IsString()
-  @IsOptional()
-  facebook?: string;
 
-  @IsString()
-  @IsOptional()
-  twitter?: string;
-
-  @IsString()
-  @IsOptional()
-  line?: string;
-
-  @IsString()
-  @IsOptional()
-  facebookName?: string;
-
-  @IsString()
-  @IsOptional()
-  twitterName?: string;
-
-  @IsString()
-  @IsOptional()
-  lineName?: string;
 
 
 
