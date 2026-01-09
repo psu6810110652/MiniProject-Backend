@@ -5,11 +5,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { SuppliersModule } from './suppliers/suppliers.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
 import { FandomsModule } from './fandoms/fandoms.module';
 
 @Module({
@@ -30,7 +28,7 @@ import { FandomsModule } from './fandoms/fandoms.module';
       inject: [ConfigService],
     }),
     AuthModule,
-    UsersModule, SuppliersModule, CategoriesModule, ProductsModule, OrdersModule, CampaignsModule, FandomsModule],
+    UsersModule, CategoriesModule, ProductsModule, OrdersModule, FandomsModule],
   controllers: [AppController],
   providers: [AppService],
 })

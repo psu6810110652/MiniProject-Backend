@@ -46,10 +46,6 @@ export class CreateUserDto {
   @IsOptional()
   postal_code?: string;
 
-
-
-
-
   @IsInt()
   @IsOptional()
   points?: number;
