@@ -19,4 +19,12 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   campaign_id?: string;
+
+  @IsString()
+  @IsOptional()
+  image?: string;
+
+  @IsString()
+  @IsOptional()
+  fandom?: string;
 }

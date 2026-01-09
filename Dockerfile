@@ -4,15 +4,13 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# Install dependencies including devDependencies (needed for build)
+# Install build tools for native dependencies (like bcrypt) on Alpine
+RUN apk add --no-cache python3 make g++
+
+# Install dependencies
 RUN npm install
 
-# Explicitly install missing dependencies if they were not in package.json
-RUN npm install @nestjs/config @nestjs/passport passport @nestjs/mapped-types bcrypt passport-local @types/passport-local
-
 COPY . .
-
-RUN npm run build
 
 EXPOSE 3000
 
