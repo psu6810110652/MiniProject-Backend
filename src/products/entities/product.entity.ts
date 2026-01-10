@@ -28,4 +28,19 @@ export class Product {
 
     @Column({ nullable: true })
     fandom: string;
+
+    @Column({ type: 'text', nullable: true })
+    description: string;
+
+    @Column({ default: false })
+    is_preorder: boolean;
+
+    @Column('decimal', { nullable: true })
+    deposit_amount: number;
+
+    @Column({ nullable: true })
+    release_date: string;
+
+    @Column({ type: 'text', nullable: true })
+    gallery: string; // Storing as JSON string for compatibility or simple-array if postgres
 }

@@ -21,7 +21,14 @@ export class FandomsController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   create(@Body() createFandomDto: CreateFandomDto, @Request() req) {
-    return this.fandomsService.create(createFandomDto, req.user.id);
+    console.log("DEBUG: Create Fandom Request User:", req.user);
+    const creatorId = req.user.userId || req.user.id || req.user.sub;
+
+    if (!creatorId) {
+      console.error("CRITICAL: No User ID found in request for creating fandom");
+    }
+
+    return this.fandomsService.create(createFandomDto, creatorId);
   }
 
   @Get()

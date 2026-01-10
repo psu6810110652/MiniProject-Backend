@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsInt, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsInt, IsOptional, IsBoolean } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -27,4 +27,24 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   fandom?: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_preorder?: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  deposit_amount?: number;
+
+  @IsString()
+  @IsOptional()
+  release_date?: string;
+
+  @IsString()
+  @IsOptional()
+  gallery?: string; // Expect JSON string
 }
