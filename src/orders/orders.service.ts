@@ -178,4 +178,13 @@ export class OrdersService {
 
     return savedShipment;
   }
+
+  async updateStatus(orderId: string, status: string): Promise<Order> {
+    const order = await this.ordersRepository.findOneBy({ order_id: orderId });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${orderId} not found`);
+    }
+    order.payment_status = status;
+    return this.ordersRepository.save(order);
+  }
 }

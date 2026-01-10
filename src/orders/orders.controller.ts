@@ -20,4 +20,9 @@ export class OrdersController {
   createShippingLabel(@Param('orderId') orderId: string) {
     return this.ordersService.create_shipping_label(orderId);
   }
+
+  @Post(':orderId/status')
+  updateStatus(@Param('orderId') orderId: string, @Body('status') status: string) {
+    return this.ordersService.updateStatus(orderId, status);
+  }
 }
