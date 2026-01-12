@@ -103,6 +103,10 @@ export class OrdersService {
       payment_status: 'PENDING',
       stock_deducted: true,
       items: orderItems,
+      shipping_address: createOrderDto.shipping_address,
+      payment_slip: createOrderDto.payment_slip,
+      payment_date: createOrderDto.payment_date,
+      payment_time: createOrderDto.payment_time,
     });
 
     return this.ordersRepository.save(newOrder);
@@ -110,7 +114,7 @@ export class OrdersService {
 
   async findAll(): Promise<Order[]> {
     return this.ordersRepository.find({
-      relations: ['items'],
+      relations: ['items', 'items.product', 'user'],
       order: { order_date: 'DESC' }
     });
   }
@@ -179,6 +183,17 @@ export class OrdersService {
     return savedShipment;
   }
 
+  async findOne(id: string): Promise<Order> {
+    const order = await this.ordersRepository.findOne({
+      where: { order_id: id },
+      relations: ['items', 'items.product', 'user']
+    });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    return order;
+  }
+
   async updateStatus(orderId: string, status: string): Promise<Order> {
     const order = await this.ordersRepository.findOneBy({ order_id: orderId });
     if (!order) {
@@ -186,5 +201,13 @@ export class OrdersService {
     }
     order.payment_status = status;
     return this.ordersRepository.save(order);
+  }
+
+  async remove(id: string): Promise<void> {
+    const order = await this.ordersRepository.findOneBy({ order_id: id });
+    if (!order) {
+      throw new NotFoundException(`Order with ID ${id} not found`);
+    }
+    await this.ordersRepository.remove(order);
   }
 }

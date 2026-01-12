@@ -19,6 +19,18 @@ export class Order {
     @Column()
     payment_status: string;
 
+    @Column({ nullable: true })
+    shipping_address: string;
+
+    @Column({ type: 'text', nullable: true })
+    payment_slip: string;
+
+    @Column({ nullable: true })
+    payment_date: string;
+
+    @Column({ nullable: true })
+    payment_time: string;
+
     @Column({ default: false })
     stock_deducted: boolean;
 

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Fandom } from './entities/fandom.entity';
+import { Product } from '../products/entities/product.entity';
 import { CreateFandomDto, UpdateFandomDto } from './dto/create-fandom.dto';
 
 @Injectable()
@@ -9,6 +10,8 @@ export class FandomsService {
   constructor(
     @InjectRepository(Fandom)
     private fandomsRepository: Repository<Fandom>,
+    @InjectRepository(Product)
+    private productsRepository: Repository<Product>,
   ) { }
 
   async create(createFandomDto: CreateFandomDto, creatorId: string): Promise<Fandom> {
@@ -53,11 +56,31 @@ export class FandomsService {
 
   async update(id: string, updateFandomDto: UpdateFandomDto): Promise<Fandom> {
     const fandom = await this.findOne(id);
+    const oldName = fandom.name;
 
     const updateData = {
       ...updateFandomDto,
       tags: updateFandomDto.tags ? JSON.stringify(updateFandomDto.tags) : fandom.tags,
     };
+
+    // If name is changing, update all associated products
+    if (updateFandomDto.name && updateFandomDto.name.trim() !== oldName) {
+      const newName = updateFandomDto.name.trim();
+      console.log(`Renaming Fandom from "${oldName}" to "${newName}". Updating products...`);
+
+      // Use QueryBuilder for reliable update
+      try {
+        const result = await this.productsRepository.createQueryBuilder()
+          .update(Product)
+          .set({ fandom: newName })
+          .where("fandom = :oldName", { oldName })
+          .execute();
+
+        console.log(`Updated ${result.affected} products from "${oldName}" to "${newName}"`);
+      } catch (err) {
+        console.error("Failed to update associated products:", err);
+      }
+    }
 
     Object.assign(fandom, updateData);
     return this.fandomsRepository.save(fandom);

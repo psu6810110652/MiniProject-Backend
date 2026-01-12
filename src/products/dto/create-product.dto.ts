@@ -47,4 +47,8 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   gallery?: string; // Expect JSON string
+
+  @IsNumber()
+  @IsOptional()
+  domestic_shipping_cost?: number;
 }

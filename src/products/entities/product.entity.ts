@@ -43,4 +43,7 @@ export class Product {
 
     @Column({ type: 'text', nullable: true })
     gallery: string; // Storing as JSON string for compatibility or simple-array if postgres
+
+    @Column('decimal', { nullable: true, default: 0 })
+    domestic_shipping_cost: number;
 }

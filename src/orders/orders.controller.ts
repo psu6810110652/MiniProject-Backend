@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -16,6 +16,11 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.ordersService.findOne(id);
+  }
+
   @Post(':orderId/shipping-label')
   createShippingLabel(@Param('orderId') orderId: string) {
     return this.ordersService.create_shipping_label(orderId);
@@ -24,5 +29,10 @@ export class OrdersController {
   @Post(':orderId/status')
   updateStatus(@Param('orderId') orderId: string, @Body('status') status: string) {
     return this.ordersService.updateStatus(orderId, status);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.ordersService.remove(id);
   }
 }

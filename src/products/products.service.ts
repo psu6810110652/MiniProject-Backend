@@ -44,9 +44,19 @@ export class ProductsService {
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.productsRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+    try {
+      const result = await this.productsRepository.delete(id);
+      if (result.affected === 0) {
+        throw new NotFoundException(`Product with ID ${id} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      // Handle Foreign Key Constraint violations (common code is 23503 for Postgres, others vary)
+      // We'll catch generic query errors here.
+      if (error.code === '23503' || error.message?.includes('violates foreign key constraint') || error.message?.includes('constraint')) {
+        throw new BadRequestException('Cannot delete product because it is referenced by existing orders or other data.');
+      }
+      throw error;
     }
   }
 }
