@@ -36,4 +36,17 @@ export class ProductsService {
     product.stock_qty -= quantity;
     await this.productsRepository.save(product);
   }
+
+  async update(id: string, updateProductDto: any): Promise<Product> {
+    const product = await this.findOne(id);
+    this.productsRepository.merge(product, updateProductDto);
+    return this.productsRepository.save(product);
+  }
+
+  async remove(id: string): Promise<void> {
+    const result = await this.productsRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+  }
 }

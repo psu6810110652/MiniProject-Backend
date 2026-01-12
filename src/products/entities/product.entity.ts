@@ -23,7 +23,7 @@ export class Product {
     @Column({ nullable: true })
     campaign_id?: string;
 
-    @Column({ nullable: true })
+    @Column({ type: 'text', nullable: true })
     image: string;
 
     @Column({ nullable: true })
