@@ -46,14 +46,6 @@ export class UsersService {
     return this.usersRepository.save(updatedUser);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.softDelete(id);
-  }
-
-  async restore(id: string): Promise<void> {
-    await this.usersRepository.restore(id);
-  }
-
   async findAll(): Promise<User[]> {
     const users = await this.usersRepository.find();
     // Decrypt passwords for Admin/API view
